@@ -8,13 +8,13 @@ jobs:
       GREETING: "hi from env var"
     steps:
       - run: echo "$GREETING"
-      - run: echo "secret length check: ${{ secrets.MY_SECRET != '' }}"
-      - run: echo "the secret itself: ${{ secrets.MY_SECRET }}"
+      - run: echo "secret is set = ${{ secrets.MY_SECRET != '' }}"
+      - run: echo "the secret itself is ${{ secrets.MY_SECRET }}"
 
   job-two:
     needs: job-one
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - run: echo "this only runs on main branch for If function"
+      - run: echo "this only runs on main branch"
 
