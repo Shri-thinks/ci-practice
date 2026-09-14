@@ -2,11 +2,17 @@ name: Hello CI
 on: push
 
 jobs:
-  say-hello:
+  job-one:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Hello from a fresh virtual machine"
-      - run: whoami
-      - run: pwd
+      - run: echo "created by job one" > secret.txt
       - run: ls -la
+
+  job-two:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ls -la
+      - run: cat secret.txt
+
