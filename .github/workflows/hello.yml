@@ -4,21 +4,17 @@ on: push
 jobs:
   job-one:
     runs-on: ubuntu-latest
+    env:
+      GREETING: "hi from env var"
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "created by job one" > secret.txt
-      - uses: actions/upload-artifact@v4
-        with:
-          name: my-file
-          path: secret.txt
+      - run: echo "$GREETING"
+      - run: echo "secret length check: ${{ secrets.MY_SECRET != '' }}"
+      - run: echo "the secret itself: ${{ secrets.MY_SECRET }}"
 
   job-two:
     needs: job-one
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: my-file
-      - run: cat secret.txt
+      - run: echo "this only runs on main branch"
 
