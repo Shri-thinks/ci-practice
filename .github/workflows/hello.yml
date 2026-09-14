@@ -5,6 +5,7 @@ jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - run: echo "Hello from a fresh virtual machine"
       - run: whoami
       - run: pwd
