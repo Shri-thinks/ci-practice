@@ -7,12 +7,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo "created by job one" > secret.txt
-      - run: ls -la
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-file
+          path: secret.txt
 
   job-two:
+    needs: job-one
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: ls -la
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-file
       - run: cat secret.txt
 
