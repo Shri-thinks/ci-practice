@@ -18,7 +18,7 @@ jobs:
       - run: pip install pytest
       - run: pytest -v
 
-    deploy:
+  deploy:
       needs: test
       if: github.ref == 'refs/heads/main'
       runs-on: ubuntu-latest
