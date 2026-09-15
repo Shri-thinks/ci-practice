@@ -1,20 +1,27 @@
-name: Hello CI
-on: push
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
-  job-one:
+  test:
     runs-on: ubuntu-latest
-    env:
-      GREETING: "hi from env var"
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
     steps:
-      - run: echo "$GREETING"
-      - run: echo "secret is set = ${{ secrets.MY_SECRET != '' }}"
-      - run: echo "the secret itself is ${{ secrets.MY_SECRET }}"
+      - uses: action/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install pytest
+      - run: pytest -v
 
-  job-two:
-    needs: job-one
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "this only runs on main branch"
+    deploy:
+      needs: test
+      if: github.ref == 'refs/heads/main'
+      runs-on: ubuntu-latest
+      steps:
+      - run: echo "Deploying now (pretend) — all tests passed on main"
 
